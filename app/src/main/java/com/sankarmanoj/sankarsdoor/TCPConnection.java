@@ -121,6 +121,7 @@ public class TCPConnection extends Thread {
             //TODO:Broadcast Connection Error
         }
     }
+
     public void SendMessage(String message)
     {
         String toSend = Character.toString((char)13)+message+Character.toString((char)14);

@@ -39,7 +39,7 @@ public class MainActivity extends Activity {
     Button OpenButton, CloseButton;
     SharedPreferences.Editor sharedPrefEditor;
     TCPConnection tcpConnection;
-    String RPIMac = "00:1B:10:00:2A:EC";
+    String RPIMac = "5C:F3:70:76:E0:87";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -49,7 +49,7 @@ public class MainActivity extends Activity {
         sharedPrefEditor = sharedPreferences.edit();
         ConnectedDeviceTextView = (TextView)findViewById(R.id.connectedTextView);
         WifiStatusTextView = (TextView)findViewById(R.id.wifistatusTextView);
-        OpenButton=(Button)findViewById(R.id.openButton);
+        OpenButton=(Button)findViewById( R.id.openButton);
         CloseButton=(Button)findViewById(R.id.closeButton);
         StateTextView = (TextView)findViewById(R.id.stateTextView);
 
@@ -60,11 +60,25 @@ public class MainActivity extends Activity {
         myWifiManger.setWifiEnabled(true);
         tcpConnection = new TCPConnection("192.168.0.200",8439);
         bluetoothConnection = new BluetoothConnection(myBluetoothAdapter.getRemoteDevice(RPIMac));
+        ConnectedDeviceTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bluetoothConnection=new BluetoothConnection(myBluetoothAdapter.getRemoteDevice(RPIMac));
+                ConnectedDeviceTextView.setText("Connecting...");
 
+            }
+        });
 
         //Device Change Option
 
         //On Click Listeners
+        WifiStatusTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tcpConnection = new TCPConnection("192.168.0.200",8439);
+
+            }
+        });
         OpenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,6 +99,7 @@ public class MainActivity extends Activity {
             @Override
             public void onReceive(Context context, Intent intent) {
                 WifiStatusTextView.setText("Connected");
+                tcpConnection.SendMessage("status");
                 WifiStatusTextView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -171,7 +186,7 @@ public class MainActivity extends Activity {
                     @Override
                     public void onClick(View view) {
                         tcpConnection = new TCPConnection("192.168.0.200",8439);
-                        WifiStatusTextView.setOnClickListener(null);
+
                     }
                 });
             }

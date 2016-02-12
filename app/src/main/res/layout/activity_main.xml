@@ -51,5 +51,5 @@
         android:layout_alignTop="@+id/openButton"
         android:layout_alignEnd="@+id/stateTextView" />
 
-8
+    8
 </RelativeLayout>
